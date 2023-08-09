@@ -1,21 +1,40 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Do Nothing App</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
-</head>
-<body>
+// Select DOM elements
+const taskInput = document.getElementById('task-input');
+const addTaskBtn = document.getElementById('add-task-btn');
+const tasksContainer = document.getElementById('tasks-container');
 
-  <h1>Do Nothing App</h1>
+// Add task
+addTaskBtn.addEventListener('click', () => {
+  const taskText = taskInput.value;
   
-  <div id="input-container">
-    <input type="text" id="task-input" placeholder="Enter a task">
-    <button id="add-task-btn">Add Task</button> 
-  </div>
+  // Create task div
+  const task = document.createElement('div');
+  task.classList.add('task');
   
-  <div id="tasks-container"></div>
-
-  <script src="script.js"></script>
-
-</body>
-</html>
+  // Create task content
+  const content = document.createElement('p');
+  content.textContent = taskText;
+  task.appendChild(content);
+  
+  // Create do task button
+  const doTaskBtn = document.createElement('button');
+  doTaskBtn.textContent = 'Do Task';
+  doTaskBtn.addEventListener('click', () => {
+    alert(`Doing ${taskText}`);
+  });
+  task.appendChild(doTaskBtn);
+  
+  // Create do nothing button
+  const doNothingBtn = document.createElement('button');
+  doNothingBtn.textContent = 'Do Nothing';
+  doNothingBtn.addEventListener('click', () => {
+    alert('Doing nothing!'); 
+  });
+  task.appendChild(doNothingBtn);
+  
+  // Add task to container
+  tasksContainer.appendChild(task);
+  
+  // Clear input
+  taskInput.value = '';
+});

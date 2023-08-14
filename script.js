@@ -3,12 +3,22 @@ const taskInput = document.getElementById('task-input');
 const addTaskBtn = document.getElementById('add-task-btn');
 const tasksContainer = document.getElementById('tasks-container');
 
-// Add task
-addTaskBtn.addEventListener('click', () => {
-  const taskText = taskInput.value.trim();
+// Load tasks from LocalStorage
+const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
-  // Check input is not empty
-  if (taskText) {
+function addTask(taskText, render = true) {
+    // Do not add empty tasks
+    if (!taskText) return;
+
+    tasks.push(taskText);
+
+    // Store tasks in LocalStorage
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+
+    if (render) renderTask(taskText);
+}
+
+function renderTask(taskText) {
     // Create task div
     const task = document.createElement('div');
     task.classList.add('task');
@@ -22,7 +32,7 @@ addTaskBtn.addEventListener('click', () => {
     const doTaskBtn = document.createElement('button');
     doTaskBtn.textContent = 'Do Task';
     doTaskBtn.addEventListener('click', () => {
-      alert(`Doing ${taskText}`);
+        alert(`Doing ${taskText}`);
     });
     task.appendChild(doTaskBtn);
 
@@ -30,7 +40,7 @@ addTaskBtn.addEventListener('click', () => {
     const doNothingBtn = document.createElement('button');
     doNothingBtn.textContent = 'Do Nothing';
     doNothingBtn.addEventListener('click', () => {
-      alert('Doing nothing!');
+        alert('Doing nothing!');
     });
     task.appendChild(doNothingBtn);
 
@@ -38,14 +48,30 @@ addTaskBtn.addEventListener('click', () => {
     const removeTaskBtn = document.createElement('button');
     removeTaskBtn.textContent = 'Remove Task';
     removeTaskBtn.addEventListener('click', () => {
-      tasksContainer.removeChild(task);
+        removeTask(taskText);
     });
     task.appendChild(removeTaskBtn);
-    
+
     // Add task to container
     tasksContainer.appendChild(task);
-    
+}
+
+function removeTask(taskText) {
+    const index = tasks.indexOf(taskText);
+    if (index !== -1) {
+        tasks.splice(index, 1);
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        tasksContainer.innerHTML = '';
+        tasks.forEach(renderTask);
+    }
+}
+
+// Add task
+addTaskBtn.addEventListener('click', () => {
+    addTask(taskInput.value.trim());
     // Clear input
     taskInput.value = '';
-  }
 });
+
+// Render tasks from LocalStorage on load
+tasks.forEach(renderTask);

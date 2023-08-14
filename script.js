@@ -4,7 +4,9 @@ const addTaskBtn = document.getElementById('add-task-btn');
 const tasksContainer = document.getElementById('tasks-container');
 
 // Load tasks from LocalStorage
-const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+// Sort tasks by ASCII
+tasks.sort();
 
 function addTask(taskText, render = true) {
     // Do not add empty tasks
@@ -12,10 +14,19 @@ function addTask(taskText, render = true) {
 
     tasks.push(taskText);
 
+    // Sort tasks
+    tasks.sort();
+
     // Store tasks in LocalStorage
     localStorage.setItem('tasks', JSON.stringify(tasks));
 
-    if (render) renderTask(taskText);
+    if (render) {
+        // Clear tasks container
+        tasksContainer.innerHTML = '';
+
+        // Render all tasks
+        tasks.forEach(renderTask);
+    }
 }
 
 function renderTask(taskText) {

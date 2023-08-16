@@ -63,6 +63,14 @@ function renderTask(taskText) {
     });
     task.appendChild(removeTaskBtn);
 
+    // Create rename task button
+    const renameTaskBtn = document.createElement('button');
+    renameTaskBtn.textContent = 'Rename Task';
+    renameTaskBtn.addEventListener('click', () => {
+        renameTask(taskText);
+    });
+    task.appendChild(renameTaskBtn);
+
     // Add task to container
     tasksContainer.appendChild(task);
 }
@@ -71,6 +79,18 @@ function removeTask(taskText) {
     const index = tasks.indexOf(taskText);
     if (index !== -1) {
         tasks.splice(index, 1);
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        tasksContainer.innerHTML = '';
+        tasks.forEach(renderTask);
+    }
+}
+
+function renameTask(oldTaskText) {
+    const newTaskText = prompt(`Rename "${oldTaskText}" to:`, oldTaskText);
+    const index = tasks.indexOf(oldTaskText);
+    if (index !== -1 && newTaskText && newTaskText.trim() !== '') {
+        tasks[index] = newTaskText.trim();
+        tasks.sort();
         localStorage.setItem('tasks', JSON.stringify(tasks));
         tasksContainer.innerHTML = '';
         tasks.forEach(renderTask);

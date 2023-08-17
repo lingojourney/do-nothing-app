@@ -43,7 +43,7 @@ function renderTask(taskText) {
     const doTaskBtn = document.createElement('button');
     doTaskBtn.textContent = 'Do Task';
     doTaskBtn.addEventListener('click', () => {
-        alert(`Doing ${taskText}`);
+        alert(`Meditating or Doing ${taskText}`);
     });
     task.appendChild(doTaskBtn);
 
@@ -51,7 +51,7 @@ function renderTask(taskText) {
     const doNothingBtn = document.createElement('button');
     doNothingBtn.textContent = 'Do Nothing';
     doNothingBtn.addEventListener('click', () => {
-        alert('Doing nothing!');
+        alert('Meditating or Doing nothing!');
     });
     task.appendChild(doNothingBtn);
 
